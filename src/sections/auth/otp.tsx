@@ -164,7 +164,7 @@ export default function AuthOtp() {
               <BotMessageSquare color="white" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Rumsan AI</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Chat App</h1>
         </div>
 
         <Card className="border-0 shadow-lg">
