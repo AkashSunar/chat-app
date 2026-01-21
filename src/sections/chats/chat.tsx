@@ -61,7 +61,7 @@ export default function Chat() {
         (payload) => {
           console.log("Change received!");
           setMessages((current) => [...current, payload.new as Message]);
-        }
+        },
       )
       .on(
         "postgres_changes",
@@ -70,10 +70,10 @@ export default function Chat() {
           console.log("Update received:", payload);
           setMessages((current) =>
             current.map((msg) =>
-              msg.id === payload.new.id ? { ...msg, ...payload.new } : msg
-            )
+              msg.id === payload.new.id ? { ...msg, ...payload.new } : msg,
+            ),
           );
-        }
+        },
       )
       .subscribe();
 
