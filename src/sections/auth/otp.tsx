@@ -21,7 +21,7 @@ import { BotMessageSquare, ArrowLeft } from "lucide-react";
 import useLoginMutation, { useVerifyOtpMutation } from "@/hooks/loginQuery";
 
 export default function AuthOtp() {
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otp, setOtp] = useState(["", "", "", "", "", "", "", ""]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [isResendPending, startResendTransition] = useTransition();
@@ -41,7 +41,7 @@ export default function AuthOtp() {
       setOtp(newOtp);
 
       // Auto-focus next input
-      if (value && index < 5) {
+      if (value && index < 7) {
         const nextInput = document.getElementById(`otp-${index + 1}`);
         nextInput?.focus();
       }
@@ -70,12 +70,12 @@ export default function AuthOtp() {
     e.preventDefault();
     const pastedData = e.clipboardData.getData("text").replace(/\D/g, ""); // Remove non-digits
 
-    if (pastedData.length >= 6) {
-      const newOtp = pastedData.slice(0, 6).split("");
+    if (pastedData.length >= 8) {
+      const newOtp = pastedData.slice(0, 8).split("");
       setOtp(newOtp);
 
       // Focus on the last input field
-      const lastInput = document.getElementById(`otp-5`);
+      const lastInput = document.getElementById(`otp-7`);
       lastInput?.focus();
     }
   };
@@ -92,8 +92,8 @@ export default function AuthOtp() {
     setError(null);
 
     const otpCode = otp.join("");
-    if (otpCode.length !== 6) {
-      setError("Please enter all 6 digits");
+    if (otpCode.length !== 8) {
+      setError("Please enter all 8 digits");
       return;
     }
 
