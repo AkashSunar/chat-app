@@ -3,16 +3,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  FolderOpen,
-  Bot,
-  Plug,
-  User,
-  Factory,
-  FileText,
-  Globe,
-  ChevronDown,
-} from "lucide-react";
+import { Bot, User, ChevronDown, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -50,39 +41,18 @@ interface CollapsibleMenuItemProps {
 
 const navigationItems: NavigationItem[] = [
   {
-    title: "My Resources",
-    icon: FolderOpen,
-    submenu: [
-      {
-        title: "PDF Documents",
-        icon: FileText,
-        slug: "/documents",
-      },
-      {
-        title: "Web Documents",
-        icon: Globe,
-        slug: "/web-documents",
-      },
-    ],
-  },
-  {
-    title: "Prompt Management",
-    icon: Bot,
+    title: "Chats",
+    icon: MessageSquare,
     slug: "/agent-preview",
   },
   {
-    title: "Team Management",
-    icon: User,
-    slug: "/team-management",
-  },
-  {
-    title: "Industry Knowledge",
-    icon: Factory,
+    title: "General Queries",
+    icon: Bot,
     slug: "/industry-knowledge",
   },
   {
-    title: "Integrations",
-    icon: Plug,
+    title: "Friends",
+    icon: User,
     slug: "/integrations",
   },
 ];
