@@ -1,0 +1,234 @@
+"use client";
+
+import React from "react";
+import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  FolderOpen,
+  Bot,
+  Plug,
+  User,
+  Factory,
+  FileText,
+  Globe,
+  ChevronDown,
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+} from "@/components/ui/sidebar";
+
+interface NavigationItem {
+  title: string;
+  icon: React.ComponentType<{ className?: string }>;
+  slug?: string;
+  submenu?: Array<{
+    title: string;
+    icon: React.ComponentType<{ className?: string }>;
+    slug: string;
+  }>;
+}
+
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+interface CollapsibleMenuItemProps {
+  item: NavigationItem;
+  workspaceSlug: string;
+  pathname: string;
+}
+
+const navigationItems: NavigationItem[] = [
+  {
+    title: "My Resources",
+    icon: FolderOpen,
+    submenu: [
+      {
+        title: "PDF Documents",
+        icon: FileText,
+        slug: "/documents",
+      },
+      {
+        title: "Web Documents",
+        icon: Globe,
+        slug: "/web-documents",
+      },
+    ],
+  },
+  {
+    title: "Prompt Management",
+    icon: Bot,
+    slug: "/agent-preview",
+  },
+  {
+    title: "Team Management",
+    icon: User,
+    slug: "/team-management",
+  },
+  {
+    title: "Industry Knowledge",
+    icon: Factory,
+    slug: "/industry-knowledge",
+  },
+  {
+    title: "Integrations",
+    icon: Plug,
+    slug: "/integrations",
+  },
+];
+
+function CollapsibleMenuItem({
+  item,
+  workspaceSlug,
+  pathname,
+}: CollapsibleMenuItemProps) {
+  const isSubmenuActive = item.submenu?.some((subitem) =>
+    pathname.includes(subitem.slug),
+  );
+  const [isOpen, setIsOpen] = React.useState(isSubmenuActive);
+
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <CollapsibleTrigger
+        className={cn(
+          "w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer",
+          isSubmenuActive
+            ? "bg-gray-600 text-white"
+            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+        )}
+      >
+        <div className="flex items-center">
+          <item.icon className="mr-3 h-4 w-4" />
+          {item.title}
+        </div>
+        <ChevronDown
+          className={cn(
+            "h-4 w-4 transition-transform",
+            isOpen && "transform rotate-180",
+          )}
+        />
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        <SidebarMenuSub>
+          {item.submenu?.map((subitem) => {
+            const isSubActive = pathname.includes(subitem.slug);
+            return (
+              <SidebarMenuSubItem key={subitem.slug}>
+                <SidebarMenuSubButton asChild isActive={isSubActive}>
+                  <Link
+                    href={`/dashboard/workspace/${workspaceSlug}${subitem.slug}`}
+                  >
+                    <subitem.icon className="size-4" />
+                    <span>{subitem.title}</span>
+                  </Link>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+            );
+          })}
+        </SidebarMenuSub>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const pathname = usePathname();
+
+  // Filter navigation items based on workspace type
+  const filteredNavigationItems = navigationItems;
+  const workspaceSlug = pathname.split("/")[3];
+
+  return (
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={cn(
+          "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out",
+          "lg:relative lg:translate-x-0", // Always visible on desktop
+          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0", // Mobile: show when open, Desktop: always show
+        )}
+      >
+        <div className="flex flex-col h-full">
+          {/* Logo */}
+          <div className="flex items-center px-4 py-6 border-b border-gray-200">
+            <Link
+              href="/dashboard"
+              className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+            >
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-4 h-4 text-white"
+                  fill="currentColor"
+                >
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-sm font-semibold text-gray-900">
+                  Rumsan AI
+                </h1>
+                <p className="text-xs text-gray-500">v1.0.0</p>
+              </div>
+            </Link>
+          </div>
+
+          {/* Navigation */}
+          <ScrollArea className="flex-1 px-3 py-4">
+            <nav className="space-y-1">
+              {filteredNavigationItems.map((item) => {
+                // Check if item has submenu
+                if (item.submenu) {
+                  return (
+                    <CollapsibleMenuItem
+                      key={item.title}
+                      item={item}
+                      workspaceSlug={workspaceSlug}
+                      pathname={pathname}
+                    />
+                  );
+                }
+
+                // Regular menu item without submenu
+                const isActive = item.slug && pathname.includes(item.slug);
+                return (
+                  <Link
+                    key={item.title}
+                    href={`/dashboard/workspace/${workspaceSlug}${item.slug}`}
+                    className={cn(
+                      "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                      isActive
+                        ? "bg-gray-600 text-white"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                    )}
+                  >
+                    <item.icon className="mr-3 h-4 w-4" />
+                    {item.title}
+                  </Link>
+                );
+              })}
+            </nav>
+          </ScrollArea>
+        </div>
+      </div>
+    </>
+  );
+}
