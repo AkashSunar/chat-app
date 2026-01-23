@@ -9,58 +9,49 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
 import { LogOut } from "lucide-react";
-import { useUserLoading, useUserProfile, useClearUser } from "@/stores";
 import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@supabase/ssr";
-import { useOrganizationContext } from "@/hooks/useOrganizationContext";
+import React from "react";
 
 export function ProfileUserDashboard() {
-  const orgContext = useOrganizationContext();
-  const userProfile = useUserProfile();
-  const isLoading = useUserLoading();
-  const clearUser = useClearUser();
   const router = useRouter();
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
+  const [session, setSession] = React.useState<any>(null);
+  const [sessionError, setSessionError] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        setSession(data.session);
+        setSessionError(error);
+      } catch (err) {
+        setSessionError(err);
+      }
+    };
+    fetchSession();
+  }, [supabase]);
+
   // Extract user data with fallbacks
-  const getUserDisplayData = () => {
-    if (isLoading) {
-      return {
-        name: "Loading...",
-        email: "",
-        initials: "...",
-      };
-    }
 
-    if (!userProfile) {
-      return {
-        name: "Guest User",
-        email: "guest@example.com",
-        initials: "GU",
-      };
-    }
-
-    const name = userProfile.name || userProfile.email?.split("@")[0] || "User";
-    const email = userProfile.email || "";
-    const initials =
-      name
-        .split(" ")
-        .map((part) => part.charAt(0))
-        .join("")
-        .toUpperCase()
-        .slice(0, 2) || "U";
-
-    return { name, email, initials };
-  };
+  const name = session?.user?.user_metadata?.full_name || "User";
+  const email = session?.user?.email || "";
+  const initials =
+    name
+      .split(" ")
+      .map((part: string) => part.charAt(0))
+      .join("")
+      .toUpperCase()
+      .slice(0, 2) || "U";
 
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      await clearUser();
+      //   await clearUser();
       localStorage.clear();
       router.push("/auth/login");
     } catch (error) {
@@ -68,16 +59,6 @@ export function ProfileUserDashboard() {
       router.push("/auth/login");
     }
   };
-
-  const handleRedirectUrl = () => {
-    router.push(
-      orgContext?.userState === "USER_WITH_ORG_ADMIN_ROLE"
-        ? "/admin"
-        : "/dashboard",
-    );
-  };
-
-  const { name, email, initials } = getUserDisplayData();
 
   return (
     <DropdownMenu>
@@ -96,17 +77,7 @@ export function ProfileUserDashboard() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuLabel
-          onClick={handleRedirectUrl}
-          className="flex items-center justify-between py-2 cursor-pointer"
-        >
-          <span className="text-sm font-normal">Account</span>
-          <Badge variant="secondary" className="text-xs font-medium">
-            {orgContext?.userState === "USER_WITH_ORG_ADMIN_ROLE"
-              ? "Admin"
-              : "Member"}
-          </Badge>
-        </DropdownMenuLabel>
+
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
           <LogOut className="mr-2 h-4 w-4" />
