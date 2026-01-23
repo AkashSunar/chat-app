@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
-import { UserSchema } from "@/lib/schemas";
+// import { UserSchema } from "@/lib/schemas";
 // import { initializeAuthAfterLogin } from "@/lib/store-hydration";
 import { getAuthToken } from "@/lib/utils";
 import { BotMessageSquare, ArrowLeft } from "lucide-react";
@@ -118,20 +118,21 @@ export default function AuthOtp() {
             sessionError,
           );
         } else if (session?.user) {
-          const convertedUser = UserSchema.parse({
-            id: session.user.id,
-            email: session.user.email,
-            phone: session.user.phone,
-            created_at: session.user.created_at,
-            updated_at: session.user.updated_at,
-            user_metadata: session.user.user_metadata,
-          });
+          console.log(session?.user, "user");
+          // const convertedUser = UserSchema.parse({
+          //   id: session.user.id,
+          //   email: session.user.email,
+          //   phone: session.user.phone,
+          //   created_at: session.user.created_at,
+          //   updated_at: session.user.updated_at,
+          //   user_metadata: session.user.user_metadata,
+          // });
           //   import("@/stores/userStore").then(({ useUserStore }) => {
           //     useUserStore.getState().updateUser(convertedUser);
           //   });
           //   initializeAuthAfterLogin();
           const token = getAuthToken();
-          router.push("/dashboard");
+          router.push("/");
 
           // Fetch organiza tion context and set cookie before navigation
         }
