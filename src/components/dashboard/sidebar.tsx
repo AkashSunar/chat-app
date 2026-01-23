@@ -43,17 +43,17 @@ const navigationItems: NavigationItem[] = [
   {
     title: "Chats",
     icon: MessageSquare,
-    slug: "/agent-preview",
+    slug: "#",
   },
   {
     title: "General Queries",
     icon: Bot,
-    slug: "/industry-knowledge",
+    slug: "#",
   },
   {
     title: "Friends",
     icon: User,
-    slug: "/integrations",
+    slug: "#",
   },
 ];
 
@@ -95,9 +95,7 @@ function CollapsibleMenuItem({
             return (
               <SidebarMenuSubItem key={subitem.slug}>
                 <SidebarMenuSubButton asChild isActive={isSubActive}>
-                  <Link
-                    href={`/dashboard/workspace/${workspaceSlug}${subitem.slug}`}
-                  >
+                  <Link href={`/dashboard/workspace`}>
                     <subitem.icon className="size-4" />
                     <span>{subitem.title}</span>
                   </Link>
@@ -180,7 +178,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 return (
                   <Link
                     key={item.title}
-                    href={`/dashboard/workspace/${workspaceSlug}${item.slug}`}
+                    href={`/dashboard`}
                     className={cn(
                       "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
                       isActive
