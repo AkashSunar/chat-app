@@ -46,7 +46,7 @@ export function MainHeader({ onMenuClick }: HeaderProps) {
               <div className="w-6 h-6 bg-black rounded flex items-center justify-center">
                 <BotMessageSquare size={16} color="white" />
               </div>
-              <h1 className="text-lg font-semibold text-gray-900">Rumsan AI</h1>
+              <h1 className="text-lg font-semibold text-gray-900">ConvoX</h1>
             </div>
           </Link>
 

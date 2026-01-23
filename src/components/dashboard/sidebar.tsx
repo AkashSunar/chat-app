@@ -153,9 +153,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 </svg>
               </div>
               <div>
-                <h1 className="text-sm font-semibold text-gray-900">
-                  Rumsan AI
-                </h1>
+                <h1 className="text-sm font-semibold text-gray-900">ConvoX</h1>
                 <p className="text-xs text-gray-500">v1.0.0</p>
               </div>
             </Link>
