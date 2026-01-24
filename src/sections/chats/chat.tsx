@@ -19,6 +19,7 @@ import MessageLoader from "./message-loader";
 type Message = {
   id: string;
   user_name: string;
+  content: string;
   query: string;
   response: string;
   created_at: string;
@@ -187,20 +188,20 @@ export default function Chat() {
                     <div className="space-y-4 pt-3">
                       {messages.map((message) => (
                         <div key={message.id} className="space-y-4">
-                          {message.query && (
+                          {message && (
                             <div className="flex gap-4 items-start">
                               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted">
                                 <User className="h-4 w-4" />
                               </div>
                               <div className="flex flex-col space-y-2">
                                 <div className="px-4 py-2 rounded-lg shadow-sm">
-                                  {message.query}
+                                  {message.content}
                                 </div>
                               </div>
                             </div>
                           )}
 
-                          <div className="flex gap-4 items-end p-4">
+                          {/* <div className="flex gap-4 items-end p-4">
                             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
                               <Bot className="h-4 w-10" />
                             </div>
@@ -217,7 +218,7 @@ export default function Chat() {
                                 ) : null}
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       ))}
                       <div ref={messagesEndRef} />
