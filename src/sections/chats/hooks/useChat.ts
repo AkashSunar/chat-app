@@ -8,10 +8,14 @@ export const useChat = () => {
   const { mutate: askQuery, isPending } = useAskQuestion();
 
   const handleSubmit = async () => {
+    console.log("Submitting query:", newQuery);
     if (!newQuery.trim()) return;
     const { data, error } = await supabase
       .from("messages")
-      .insert({ user_name: username, query: newQuery })
+      .insert({
+        userId: "657e828e-c1cd-4d72-af0f-7000e1f588fb",
+        content: newQuery,
+      })
       .select();
     if (error) {
       console.error("Error sending query:", error);
