@@ -8,7 +8,6 @@ export const useChat = () => {
   const { mutate: askQuery, isPending } = useAskQuestion();
 
   const handleSubmit = async () => {
-    console.log("Submitting query:", newQuery);
     if (!newQuery.trim()) return;
     const { data, error } = await supabase
       .from("messages")
@@ -20,16 +19,16 @@ export const useChat = () => {
     if (error) {
       console.error("Error sending query:", error);
     }
-    const userMessage = {
-      query: newQuery,
-      top_k: 3,
-      temperature: 0.3,
-      id: data ? data[0].id : "",
-    };
+    // const userMessage = {
+    //   query: newQuery,
+    //   top_k: 3,
+    //   temperature: 0.3,
+    //   id: data ? data[0].id : "",
+    // };
     setNewQuery("");
-    askQuery({
-      payload: userMessage,
-    });
+    // askQuery({
+    //   payload: userMessage,
+    // });
   };
   return {
     handleSubmit,
