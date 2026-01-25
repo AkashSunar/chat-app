@@ -11,10 +11,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import supabase from "@/utils/supabase/client";
-import { Bot, Send, User } from "lucide-react";
+import { Send, User } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useChat } from "./hooks/useChat";
-import MessageLoader from "./message-loader";
 
 type Message = {
   id: string;
