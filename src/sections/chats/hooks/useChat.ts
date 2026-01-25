@@ -4,7 +4,6 @@ import { useState } from "react";
 
 export const useChat = () => {
   const [newQuery, setNewQuery] = useState("");
-  const [username, setUsername] = useState("");
   const { mutate: askQuery, isPending } = useAskQuestion();
 
   const handleSubmit = async () => {
@@ -34,8 +33,6 @@ export const useChat = () => {
     handleSubmit,
     newQuery,
     setNewQuery,
-    username,
-    setUsername,
     isPending,
   };
 };

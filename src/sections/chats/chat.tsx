@@ -27,14 +27,7 @@ export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [hasEnteredName, setHasEnteredName] = useState(false);
 
-  const {
-    newQuery,
-    setNewQuery,
-    handleSubmit,
-    username,
-    setUsername,
-    isPending,
-  } = useChat();
+  const { newQuery, setNewQuery, handleSubmit } = useChat();
 
   // Fetch initial messages
   useEffect(() => {
@@ -103,7 +96,7 @@ export default function Chat() {
           <h1 className="text-xl font-semibold">Chat Interface</h1>
           {hasEnteredName && (
             <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full">
-              {username}
+              {/* {username} */}Akash
             </span>
           )}
         </div>
@@ -122,9 +115,7 @@ export default function Chat() {
                 {messages.length === 0 ? (
                   <div className="flex items-center justify-center h-full text-center p-8">
                     <div className="space-y-2">
-                      <h3 className="text-lg font-medium">
-                        Welcome, {username}!
-                      </h3>
+                      <h3 className="text-lg font-medium">Welcome, Akash!</h3>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         Start a conversation by typing a message below.
                       </p>
