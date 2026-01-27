@@ -29,9 +29,22 @@ export default function Chat() {
 
   const { newQuery, setNewQuery, handleSubmit } = useChat();
 
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
+  const handleSendQuery = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit();
+    if (!newQuery.trim()) return;
+  };
+
   // Fetch initial messages
   useEffect(() => {
-    if (!hasEnteredName) return;
+    // if (!hasEnteredName) return;
 
     const fetchMessages = async () => {
       const { data, error } = await supabase
@@ -73,20 +86,7 @@ export default function Chat() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [hasEnteredName]);
-
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
-
-  const handleSendQuery = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    handleSubmit();
-    if (!newQuery.trim()) return;
-  };
+  }, []);
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
