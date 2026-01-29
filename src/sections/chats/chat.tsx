@@ -88,13 +88,36 @@ export default function Chat() {
   }, []);
 
   //fetch user
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const user = await supabase.auth.getUser();
+  //     if (user) {
+  //       console.log("user", user);
+  //       setUser(user.data.user);
+  //     }
+  //   };
+  //   fetchUser();
+  // }, []);
   useEffect(() => {
     const fetchUser = async () => {
-      const user = supabase.auth.getUser();
-      if (user) {
-        setUser((await user).data.user);
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+
+      if (error) {
+        console.error(error);
+        return;
       }
+
+      if (!session) {
+        console.log("No active session");
+        return;
+      }
+      console.log("user", session.user);
+      setUser(session.user);
     };
+
     fetchUser();
   }, []);
   return (
