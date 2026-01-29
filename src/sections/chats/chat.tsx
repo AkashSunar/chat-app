@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import supabase from "@/utils/supabase/client";
 import { Send, User } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import { useChat } from "./hooks/useChat";
 
 type Message = {
@@ -25,11 +25,12 @@ type Message = {
 };
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [hasEnteredName, setHasEnteredName] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
   const { newQuery, setNewQuery, handleSubmit } = useChat();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -88,15 +89,25 @@ export default function Chat() {
     };
   }, []);
 
+  //fetch user
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = supabase.auth.getUser();
+      if (user) {
+        setUser((await user).data.user);
+      }
+    };
+    fetchUser();
+  }, []);
   return (
     <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <header className="border-b bg-white dark:bg-gray-950 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h1 className="text-xl font-semibold">Chat Interface</h1>
-          {hasEnteredName && (
+          {user && (
             <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full">
-              {/* {username} */}Akash
+              {user.email}
             </span>
           )}
         </div>
