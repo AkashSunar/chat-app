@@ -45,8 +45,6 @@ export default function Chat() {
 
   // Fetch initial messages
   useEffect(() => {
-    // if (!hasEnteredName) return;
-
     const fetchMessages = async () => {
       const { data, error } = await supabase
         .from("messages")
