@@ -43,7 +43,7 @@ const navigationItems: NavigationItem[] = [
   {
     title: "Chats",
     icon: MessageSquare,
-    slug: "#",
+    slug: "/dashboard/chats",
   },
   {
     title: "General Queries",
