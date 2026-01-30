@@ -57,11 +57,7 @@ const navigationItems: NavigationItem[] = [
   },
 ];
 
-function CollapsibleMenuItem({
-  item,
-  workspaceSlug,
-  pathname,
-}: CollapsibleMenuItemProps) {
+function CollapsibleMenuItem({ item, pathname }: CollapsibleMenuItemProps) {
   const isSubmenuActive = item.submenu?.some((subitem) =>
     pathname.includes(subitem.slug),
   );
