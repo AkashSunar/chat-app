@@ -87,17 +87,6 @@ export default function Chat() {
     };
   }, []);
 
-  //fetch user
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const user = await supabase.auth.getUser();
-  //     if (user) {
-  //       console.log("user", user);
-  //       setUser(user.data.user);
-  //     }
-  //   };
-  //   fetchUser();
-  // }, []);
   useEffect(() => {
     const fetchUser = async () => {
       const {
