@@ -132,7 +132,8 @@ export default function AuthOtp() {
           //   });
           //   initializeAuthAfterLogin();
           const token = getAuthToken();
-          router.push("/dashboard");
+          console.log("token", token);
+          // router.push("/dashboard");
 
           // Fetch organiza tion context and set cookie before navigation
         }
