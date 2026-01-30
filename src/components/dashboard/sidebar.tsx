@@ -53,7 +53,7 @@ const navigationItems: NavigationItem[] = [
   {
     title: "Friends",
     icon: User,
-    slug: "#",
+    slug: "/dashboard/friends",
   },
 ];
 
