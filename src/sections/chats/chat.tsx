@@ -123,7 +123,7 @@ export default function Chat() {
   return (
     <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="border-b bg-white dark:bg-gray-950 px-4 py-3 flex items-center justify-between">
+      {/* <header className="border-b bg-white dark:bg-gray-950 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h1 className="text-xl font-semibold">Chat Interface</h1>
           {user && (
@@ -132,7 +132,7 @@ export default function Chat() {
             </span>
           )}
         </div>
-      </header>
+      </header> */}
 
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
