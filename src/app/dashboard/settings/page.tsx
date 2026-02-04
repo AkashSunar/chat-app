@@ -3,7 +3,7 @@ import React from "react";
 function page() {
   return (
     <div className="flex items-center justify-center h-screen font-bold">
-      Welcome to Settings Page
+      This is the setting page the app seting is provided
     </div>
   );
 }
