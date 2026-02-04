@@ -3,7 +3,7 @@ import React from "react";
 const Friends = () => {
   return (
     <div className="flex items-center justify-center h-screen font-bold">
-      Welcome to Friends Page
+      This is the page where your friends are listed
     </div>
   );
 };
