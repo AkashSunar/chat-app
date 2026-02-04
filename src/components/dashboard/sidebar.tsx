@@ -3,7 +3,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { User, ChevronDown, MessageSquare, Settings } from "lucide-react";
+import { User, ChevronDown, MessageSquare, Settings, Bot } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -54,6 +54,11 @@ const navigationItems: NavigationItem[] = [
     title: "Friends",
     icon: User,
     slug: "friends",
+  },
+  {
+    title: "Bot Assistant",
+    icon: Bot,
+    slug: "assistant",
   },
 ];
 
