@@ -27,6 +27,7 @@ export function ProfileUserDashboard() {
     const fetchSession = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
+        console.log(data, "data in profile");
         setSession(data.session);
         setSessionError(error);
       } catch (err) {

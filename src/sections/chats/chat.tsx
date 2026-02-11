@@ -22,6 +22,7 @@ type Message = {
   query: string;
   response: string;
   created_at: string;
+  userId: string;
 };
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -98,6 +99,7 @@ export default function Chat() {
         console.error(error);
         return;
       }
+      console.log(session, "sessions");
 
       if (!session) {
         console.log("No active session");
@@ -153,7 +155,7 @@ export default function Chat() {
                             </div>
                             <div className="flex flex-col space-y-2">
                               <div className="px-4 py-2 rounded-lg shadow-sm">
-                                {message.content}
+                                {message.content}+{message.userId}
                               </div>
                             </div>
                           </div>
