@@ -160,7 +160,7 @@ export default function Chat() {
                               <div
                                 className={`px-4 py-2 rounded-lg shadow-sm  ${message.userId === user?.id ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-800"}`}
                               >
-                                {message.content}+{message.userId}
+                                {message.content}
                               </div>
                             </div>
                           </div>
