@@ -14,6 +14,7 @@ import supabase from "@/utils/supabase/client";
 import { Send, User } from "lucide-react";
 import { useState, useEffect, useRef, use } from "react";
 import { useChat } from "./hooks/useChat";
+import { useAuth } from "@/hooks/useAuth";
 
 type Message = {
   id: string;
@@ -26,8 +27,10 @@ type Message = {
 };
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [user, setUser] = useState<any>(null);
-
+  const { user, loading } = useAuth();
+  if (user) {
+    console.log("user:", user);
+  }
   const { newQuery, setNewQuery, handleSubmit } = useChat();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -88,29 +91,29 @@ export default function Chat() {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const {
+  //       data: { session },
+  //       error,
+  //     } = await supabase.auth.getSession();
 
-      if (error) {
-        console.error(error);
-        return;
-      }
-      console.log(session, "sessions");
+  //     if (error) {
+  //       console.error(error);
+  //       return;
+  //     }
+  //     console.log(session, "sessions");
 
-      if (!session) {
-        console.log("No active session");
-        return;
-      }
-      console.log("user", session.user);
-      setUser(session.user);
-    };
+  //     if (!session) {
+  //       console.log("No active session");
+  //       return;
+  //     }
+  //     console.log("user", session.user);
+  //     setUser(session.user);
+  //   };
 
-    fetchUser();
-  }, []);
+  //   fetchUser();
+  // }, []);
   return (
     <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
@@ -154,7 +157,9 @@ export default function Chat() {
                               <User className="h-4 w-4" />
                             </div>
                             <div className="flex flex-col space-y-2">
-                              <div className="px-4 py-2 rounded-lg shadow-sm">
+                              <div
+                                className={`px-4 py-2 rounded-lg shadow-sm  ${message.userId === user?.id ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-800"}`}
+                              >
                                 {message.content}+{message.userId}
                               </div>
                             </div>
