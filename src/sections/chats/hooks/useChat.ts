@@ -1,17 +1,18 @@
 import { useAskQuestion } from "@/hooks/chatQuery";
+import { useAuth } from "@/hooks/useAuth";
 import supabase from "@/utils/supabase/client";
 import { useState } from "react";
 
 export const useChat = () => {
   const [newQuery, setNewQuery] = useState("");
   const { mutate: askQuery, isPending } = useAskQuestion();
-
+  const { user } = useAuth();
   const handleSubmit = async () => {
     if (!newQuery.trim()) return;
     const { data, error } = await supabase
       .from("messages")
       .insert({
-        userId: "657e828e-c1cd-4d72-af0f-7000e1f588fb",
+        userId: user?.id,
         content: newQuery,
       })
       .select();
