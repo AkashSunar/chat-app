@@ -68,7 +68,6 @@ export default function Chat() {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages" },
         (payload) => {
-          console.log("Change received!");
           setMessages((current) => [...current, payload.new as Message]);
         },
       )
@@ -76,7 +75,6 @@ export default function Chat() {
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "messages" },
         (payload) => {
-          console.log("Update received:", payload);
           setMessages((current) =>
             current.map((msg) =>
               msg.id === payload.new.id ? { ...msg, ...payload.new } : msg,
