@@ -31,6 +31,11 @@ export default function Chat() {
   if (user) {
     console.log("user:", user);
   }
+  const getInitials = (name: string) => {
+    const names = name.split(" ");
+    const initials = names.map((n) => n[0]).join("");
+    return initials.toUpperCase();
+  };
   const { newQuery, setNewQuery, handleSubmit } = useChat();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -90,7 +95,7 @@ export default function Chat() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex flex-col h-[calc(100vh-5rem)] bg-gray-50 dark:bg-gray-900 sticky ">
       {/* Header */}
       {/* <header className="border-b bg-white dark:bg-gray-950 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -108,11 +113,11 @@ export default function Chat() {
         {/* Chat area */}
         <main className="flex-1 flex flex-col h-full">
           <Card className="flex-1 flex flex-col mx-auto w-full max-w-3xl border-0 rounded-none md:my-4 md:rounded-lg md:border h-64 ">
-            <CardHeader className="px-4 py-3 border-b">
+            <CardHeader className="px-4 py-2 border-b">
               <CardTitle>Chat Session</CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 p-0 overflow-y-auto">
-              <ScrollArea className="h-[calc(100vh-13rem)] md:h-[calc(100vh-16rem)] p-4">
+            <CardContent className="flex-1 p-0 overflow-y-auto ">
+              <ScrollArea className="h-[calc(100vh-7rem)] md:h-[calc(100vh-16rem)] p-4">
                 {messages.length === 0 ? (
                   <div className="flex items-center justify-center h-full text-center p-8">
                     <div className="space-y-2">
@@ -123,44 +128,59 @@ export default function Chat() {
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-4 pt-3">
-                    {messages.map((message) => (
-                      <div key={message.id} className="space-y-4">
-                        {message && (
-                          <div className="flex gap-4 items-start">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted">
-                              <User className="h-4 w-4" />
-                            </div>
-                            <div className="flex flex-col space-y-2">
-                              <div
-                                className={`px-4 py-2 rounded-lg shadow-sm  ${message.userId === user?.id ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-800"}`}
-                              >
-                                {message.content}
-                              </div>
-                            </div>
-                          </div>
-                        )}
+                  <div className="space-y-4 ">
+                    {messages.map((message) => {
+                      const isMe = message.userId === user?.id;
+                      return (
+                        <div key={message.id} className="flex space-y-4 ">
+                          {message && (
+                            <div
+                              className={`flex gap-4 items-start w-full ${isMe ? "justify-end" : "justify-start"}`}
+                            >
+                              {/* Others: avatar on left, message on right */}
+                              {!isMe && (
+                                <>
+                                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground">
+                                    {/* <User className="h-4 w-4" /> */}
+                                    {getInitials(
+                                      user?.user_metadata?.full_name || "U",
+                                    )}
+                                  </div>
+                                  <div className="flex flex-col space-y-2 items-start">
+                                    <div
+                                      className={`px-4 py-2 rounded-lg shadow-sm bg-gray-100 text-gray-800`}
+                                    >
+                                      {message.content}
+                                    </div>
+                                  </div>
+                                </>
+                              )}
 
-                        {/* <div className="flex gap-4 items-end p-4">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                              <Bot className="h-4 w-10" />
+                              {/* Me: message on left, avatar on right */}
+                              {isMe && (
+                                <>
+                                  <div className="flex flex-col space-y-2 items-end">
+                                    <div
+                                      className={`px-4 py-2 rounded-lg shadow-sm bg-blue-600 text-white`}
+                                    >
+                                      {message.content}
+                                    </div>
+                                  </div>
+                                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground">
+                                    {/* <User className="h-4 w-4" /> */}
+                                    {/* <div className="sr-only"> */}
+                                    {getInitials(
+                                      user?.user_metadata?.full_name || "U",
+                                    )}
+                                    {/* </div> */}
+                                  </div>
+                                </>
+                              )}
                             </div>
-                            <div className="flex flex-col space-y-2 text-justify">
-                              <div className="px-4 py-2 rounded-lg shadow-sm bg-gray-100 text-gray-800">
-                                {message.response ? (
-                                  <div
-                                    dangerouslySetInnerHTML={{
-                                      __html: message.response,
-                                    }}
-                                  />
-                                ) : isPending ? (
-                                  <MessageLoader />
-                                ) : null}
-                              </div>
-                            </div>
-                          </div> */}
-                      </div>
-                    ))}
+                          )}
+                        </div>
+                      );
+                    })}
                     <div ref={messagesEndRef} />
                   </div>
                 )}
