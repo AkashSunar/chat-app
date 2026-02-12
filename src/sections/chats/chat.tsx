@@ -91,29 +91,6 @@ export default function Chat() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const {
-  //       data: { session },
-  //       error,
-  //     } = await supabase.auth.getSession();
-
-  //     if (error) {
-  //       console.error(error);
-  //       return;
-  //     }
-  //     console.log(session, "sessions");
-
-  //     if (!session) {
-  //       console.log("No active session");
-  //       return;
-  //     }
-  //     console.log("user", session.user);
-  //     setUser(session.user);
-  //   };
-
-  //   fetchUser();
-  // }, []);
   return (
     <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
