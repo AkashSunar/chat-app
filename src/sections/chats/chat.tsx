@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import supabase from "@/utils/supabase/client";
-import { Send, User } from "lucide-react";
+import { Send } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useChat } from "./hooks/useChat";
 import { useAuth } from "@/hooks/useAuth";
@@ -27,7 +27,7 @@ type Message = {
 };
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   if (user) {
     console.log("user:", user);
   }
@@ -155,12 +155,9 @@ export default function Chat() {
                                     </div>
                                   </div>
                                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground">
-                                    {/* <User className="h-4 w-4" /> */}
-                                    {/* <div className="sr-only"> */}
                                     {getInitials(
                                       user?.user_metadata?.full_name || "U",
                                     )}
-                                    {/* </div> */}
                                   </div>
                                 </>
                               )}
