@@ -8,12 +8,24 @@ import {
   Users,
   Clock,
   ChevronRight,
+  X,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const chatRooms = [
+const gradientColors = [
+  "from-blue-500 to-blue-600",
+  "from-cyan-500 to-cyan-600",
+  "from-indigo-500 to-indigo-600",
+  "from-purple-500 to-purple-600",
+  "from-pink-500 to-pink-600",
+  "from-red-500 to-red-600",
+  "from-green-500 to-green-600",
+  "from-teal-500 to-teal-600",
+];
+
+const initialChatRooms = [
   {
     id: 1,
     name: "Design Team",
@@ -78,10 +90,50 @@ const chatRooms = [
 
 export default function ChatsPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [chatRooms, setChatRooms] = useState(initialChatRooms);
 
   const filteredRooms = chatRooms.filter((room) =>
     room.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+  });
+
+  const handleCreateChat = (e: any) => {
+    e.preventDefault();
+
+    if (!formData.name.trim()) {
+      alert("Please enter a chat room name");
+      return;
+    }
+
+    const newRoom = {
+      id: Math.max(...chatRooms.map((r) => r.id), 0) + 1,
+      name: formData.name,
+      description: "0 members",
+      avatar: formData.name
+        .split(" ")
+        .slice(0, 2)
+        .map((w) => w[0])
+        .join("")
+        .toUpperCase(),
+      color: gradientColors[Math.floor(Math.random() * gradientColors.length)],
+      lastMessage: formData.description || "No messages yet",
+      time: "now",
+      unread: 0,
+    };
+
+    setChatRooms([newRoom, ...chatRooms]);
+    setIsModalOpen(false);
+    setFormData({ name: "", description: "" });
+  };
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
     <div className="h-screen bg-white flex flex-col">
@@ -94,7 +146,10 @@ export default function ChatsPage() {
               Manage all your conversations
             </p>
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white gap-2 rounded-lg">
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white gap-2 rounded-lg"
+          >
             <Plus className="h-4 w-4" />
             New Chat
           </Button>
@@ -203,6 +258,75 @@ export default function ChatsPage() {
           <span className="text-slate-400">All up to date</span>
         </div>
       </div>
+      {/* Modal Dialog */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-slate-200">
+              <h2 className="text-2xl font-bold text-slate-900">
+                Create New Chat
+              </h2>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <form onSubmit={handleCreateChat} className="p-6 space-y-5">
+              {/* Chat Name */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  Chat Room Name
+                </label>
+                <Input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Product Team, Marketing"
+                  className="w-full bg-slate-50 border-slate-300 text-slate-900 placeholder:text-slate-400 focus:bg-white rounded-lg"
+                />
+              </div>
+
+              {/* Description/Purpose */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  Purpose (Optional)
+                </label>
+                <Input
+                  type="text"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Daily stand-ups and project updates"
+                  className="w-full bg-slate-50 border-slate-300 text-slate-900 placeholder:text-slate-400 focus:bg-white rounded-lg"
+                />
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-3 pt-4">
+                <Button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-900 rounded-lg"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                >
+                  Create Chat
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
