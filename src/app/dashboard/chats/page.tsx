@@ -197,12 +197,12 @@ export default function ChatsPage() {
                   )}
 
                   {/* Gradient Header */}
-                  <div className={`h-20 bg-gradient-to-r ${room.color}`} />
+                  <div className={`h-20 bg-linear-to-r ${room.color}`} />
 
                   {/* Avatar */}
                   <div className="relative px-4 -mt-10 mb-4">
                     <div
-                      className={`h-16 w-16 rounded-xl bg-gradient-to-r ${room.color} flex items-center justify-center text-white font-bold text-xl shadow-md`}
+                      className={`h-16 w-16 rounded-xl bg-linear-to-r ${room.color} flex items-center justify-center text-white font-bold text-xl shadow-md`}
                     >
                       {room.avatar}
                     </div>
