@@ -96,18 +96,6 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-5rem)] bg-gray-50 dark:bg-gray-900 sticky ">
-      {/* Header */}
-      {/* <header className="border-b bg-white dark:bg-gray-950 px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <h1 className="text-xl font-semibold">Chat Interface</h1>
-          {user && (
-            <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full">
-              {user.email}
-            </span>
-          )}
-        </div>
-      </header> */}
-
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Chat area */}
