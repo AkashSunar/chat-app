@@ -1,4 +1,3 @@
-import Chat from "@/sections/chats/chat";
 import React from "react";
 
 function page() {
